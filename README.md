@@ -1,4 +1,4 @@
-# Voice-to-Text Studio 使用說明書
+# TalkClip 使用說明書
 
 這是一個基於 Python 的全域語音轉文字工具，專為 Windows 設計。
 
@@ -66,3 +66,18 @@
    ```
    > [!NOTE]
    > 由於模型檔案很大 (數 GB)，模型權重通常會存放在使用者的快取目錄中，建議先執行 `python download_models.py` 確保模型已就緒。
+
+---
+
+## 鳴謝與開源授權 (Credits & Licenses)
+
+TalkClip 整合了多個優秀的開源模型與技術：
+
+- **OpenAI Whisper**: 由 OpenAI 開源的 ASR 模型。授權：[MIT License](https://github.com/openai/whisper/blob/main/LICENSE)。
+- **MediaTek Breeze-ASR-25**: 由 MediaTek Research 研究開發的語音辨識模型。授權：Apache 2.0 基礎之授權。
+- **OpenAI GPT-4o-mini**: 用於文本潤飾 (Refinement) 功能。
+- **FastAPI / Uvicorn**: 提供高效能的本地 API 服務。
+- **Transformers**: Hugging Face 推出的機器學習框架。
+- **PyAudio / Pynput**: 提供音訊錄製與錄音熱鍵捕捉功能。
+
+感謝開發者社群對開源專案的貢獻！
