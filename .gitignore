@@ -1,0 +1,9 @@
+.env
+__pycache__/
+*.wav
+*.pyc
+.agent/
+dist/
+build/
+*.spec
+temp_api_audio.wav
