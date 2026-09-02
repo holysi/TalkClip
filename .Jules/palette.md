@@ -1,0 +1,3 @@
+## 2025-02-23 - Improve Tkinter Radiobutton Scannability and Grouping
+**Learning:** Tkinter's default pack layout centers elements, making multiple radio buttons hard to read quickly (poor scannability). In addition, interactive elements like radio buttons and checkboxes lack native hover cursors in Tkinter which is important for interactive discoverability.
+**Action:** Always wrap grouped options in a `ttk.LabelFrame` for clear cognitive grouping, use `anchor="w"` when packing elements inside to left-align them for better scannability, and ensure `cursor="hand2"` is set on interactive toggle/radio components to provide immediate visual hover feedback.

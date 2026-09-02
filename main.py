@@ -16,7 +16,7 @@ class VoiceToTextApp:
     def __init__(self, root):
         self.root = root
         self.root.title("TalkClip")
-        self.root.geometry("400x250")
+        self.root.geometry("400x320")
         self.root.attributes("-topmost", True)  # Keep window on top
         
         self.recorder = Recorder()
@@ -47,19 +47,23 @@ class VoiceToTextApp:
         self.hint_label.pack(pady=10)
         
         self.mode_var = tk.StringVar(value="whisper")
-        self.whisper_rb = ttk.Radiobutton(self.root, text="OpenAI Whisper (Cloud)", variable=self.mode_var, value="whisper")
-        self.whisper_rb.pack()
 
-        self.breeze_rb = ttk.Radiobutton(self.root, text="Breeze-ASR (Local)", variable=self.mode_var, value="breeze")
-        self.breeze_rb.pack()
+        self.model_frame = ttk.LabelFrame(self.root, text="語音識別模型")
+        self.model_frame.pack(pady=5, padx=20, fill="x")
 
-        self.whisper_local_rb = ttk.Radiobutton(self.root, text="Whisper-Local (CPU)", variable=self.mode_var, value="whisper-local")
-        self.whisper_local_rb.pack()
+        self.whisper_rb = ttk.Radiobutton(self.model_frame, text="OpenAI Whisper (Cloud)", variable=self.mode_var, value="whisper", cursor="hand2")
+        self.whisper_rb.pack(anchor="w", padx=10, pady=2)
+
+        self.breeze_rb = ttk.Radiobutton(self.model_frame, text="Breeze-ASR (Local)", variable=self.mode_var, value="breeze", cursor="hand2")
+        self.breeze_rb.pack(anchor="w", padx=10, pady=2)
+
+        self.whisper_local_rb = ttk.Radiobutton(self.model_frame, text="Whisper-Local (CPU)", variable=self.mode_var, value="whisper-local", cursor="hand2")
+        self.whisper_local_rb.pack(anchor="w", padx=10, pady=2)
 
         # Added Refinement Toggle
         self.refine_var = tk.BooleanVar(value=False)
-        self.refine_cb = ttk.Checkbutton(self.root, text="AI 內文潤飾 (需 OpenAI Key)", variable=self.refine_var)
-        self.refine_cb.pack(pady=5)
+        self.refine_cb = ttk.Checkbutton(self.root, text="AI 內文潤飾 (需 OpenAI Key)", variable=self.refine_var, cursor="hand2")
+        self.refine_cb.pack(pady=10)
 
         self.progress = ttk.Progressbar(self.root, mode='indeterminate')
 
