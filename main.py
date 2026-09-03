@@ -16,7 +16,7 @@ class VoiceToTextApp:
     def __init__(self, root):
         self.root = root
         self.root.title("TalkClip")
-        self.root.geometry("400x250")
+        self.root.geometry("400x280")
         self.root.attributes("-topmost", True)  # Keep window on top
         
         self.recorder = Recorder()
@@ -46,15 +46,18 @@ class VoiceToTextApp:
         self.hint_label = tk.Label(self.root, text="按住 [Right Alt] 開始錄音\n放開後自動轉文字並複製", font=("Microsoft JhengHei", 10), fg="gray")
         self.hint_label.pack(pady=10)
         
+        self.model_frame = ttk.LabelFrame(self.root, text="語音辨識模型")
+        self.model_frame.pack(padx=20, pady=5, fill="x")
+
         self.mode_var = tk.StringVar(value="whisper")
-        self.whisper_rb = ttk.Radiobutton(self.root, text="OpenAI Whisper (Cloud)", variable=self.mode_var, value="whisper")
-        self.whisper_rb.pack()
+        self.whisper_rb = ttk.Radiobutton(self.model_frame, text="OpenAI Whisper (Cloud)", variable=self.mode_var, value="whisper")
+        self.whisper_rb.pack(anchor="w", padx=10, pady=2)
 
-        self.breeze_rb = ttk.Radiobutton(self.root, text="Breeze-ASR (Local)", variable=self.mode_var, value="breeze")
-        self.breeze_rb.pack()
+        self.breeze_rb = ttk.Radiobutton(self.model_frame, text="Breeze-ASR (Local)", variable=self.mode_var, value="breeze")
+        self.breeze_rb.pack(anchor="w", padx=10, pady=2)
 
-        self.whisper_local_rb = ttk.Radiobutton(self.root, text="Whisper-Local (CPU)", variable=self.mode_var, value="whisper-local")
-        self.whisper_local_rb.pack()
+        self.whisper_local_rb = ttk.Radiobutton(self.model_frame, text="Whisper-Local (CPU)", variable=self.mode_var, value="whisper-local")
+        self.whisper_local_rb.pack(anchor="w", padx=10, pady=2)
 
         # Added Refinement Toggle
         self.refine_var = tk.BooleanVar(value=False)
