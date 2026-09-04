@@ -43,23 +43,26 @@ class VoiceToTextApp:
         self.status_label = tk.Label(self.root, text="準備就緒", font=("Microsoft JhengHei", 12))
         self.status_label.pack(pady=20)
         
-        self.hint_label = tk.Label(self.root, text="按住 [Right Alt] 開始錄音\n放開後自動轉文字並複製", font=("Microsoft JhengHei", 10), fg="gray")
+        self.hint_label = tk.Label(self.root, text="按住 [Right Alt] 開始錄音\n放開後自動轉文字並複製", font=("Microsoft JhengHei", 10), fg="#555555")
         self.hint_label.pack(pady=10)
         
+        self.options_frame = tk.Frame(self.root)
+        self.options_frame.pack()
+
         self.mode_var = tk.StringVar(value="whisper")
-        self.whisper_rb = ttk.Radiobutton(self.root, text="OpenAI Whisper (Cloud)", variable=self.mode_var, value="whisper")
-        self.whisper_rb.pack()
+        self.whisper_rb = ttk.Radiobutton(self.options_frame, text="OpenAI Whisper (Cloud)", variable=self.mode_var, value="whisper")
+        self.whisper_rb.pack(anchor="w", pady=2)
 
-        self.breeze_rb = ttk.Radiobutton(self.root, text="Breeze-ASR (Local)", variable=self.mode_var, value="breeze")
-        self.breeze_rb.pack()
+        self.breeze_rb = ttk.Radiobutton(self.options_frame, text="Breeze-ASR (Local)", variable=self.mode_var, value="breeze")
+        self.breeze_rb.pack(anchor="w", pady=2)
 
-        self.whisper_local_rb = ttk.Radiobutton(self.root, text="Whisper-Local (CPU)", variable=self.mode_var, value="whisper-local")
-        self.whisper_local_rb.pack()
+        self.whisper_local_rb = ttk.Radiobutton(self.options_frame, text="Whisper-Local (CPU)", variable=self.mode_var, value="whisper-local")
+        self.whisper_local_rb.pack(anchor="w", pady=2)
 
         # Added Refinement Toggle
         self.refine_var = tk.BooleanVar(value=False)
-        self.refine_cb = ttk.Checkbutton(self.root, text="AI 內文潤飾 (需 OpenAI Key)", variable=self.refine_var)
-        self.refine_cb.pack(pady=5)
+        self.refine_cb = ttk.Checkbutton(self.options_frame, text="AI 內文潤飾 (需 OpenAI Key)", variable=self.refine_var)
+        self.refine_cb.pack(anchor="w", pady=(5, 0))
 
         self.progress = ttk.Progressbar(self.root, mode='indeterminate')
 
