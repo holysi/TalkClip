@@ -1,0 +1,3 @@
+## 2024-05-24 - Disable interactive controls during asynchronous processing
+**Learning:** In desktop GUIs (like Tkinter), allowing users to change configuration inputs (like radio buttons or checkboxes) while an asynchronous task is running can lead to confusion or errors (e.g., switching the selected STT model while the system is already processing audio).
+**Action:** Always disable configuration inputs visually and functionally using state mechanisms (e.g., `state=tk.DISABLED`) during async processing or recording phases, and re-enable them (e.g., `state=tk.NORMAL`) in a `finally` block to ensure they unlock even if errors occur.
