@@ -2,11 +2,16 @@ import os
 import wave
 import pyaudio
 import threading
+import tempfile
 from datetime import datetime
 
 class Recorder:
-    def __init__(self, filename="temp_recording.wav"):
-        self.filename = filename
+    def __init__(self, filename=None):
+        if filename is None:
+            fd, self.filename = tempfile.mkstemp(suffix=".wav")
+            os.close(fd)
+        else:
+            self.filename = filename
         self.chunk = 1024
         self.format = pyaudio.paInt16
         self.channels = 1
