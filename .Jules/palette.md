@@ -1,0 +1,3 @@
+## 2026-09-08 - Disable UI controls during async tasks in Tkinter
+**Learning:** In desktop apps (like Tkinter), leaving configuration controls (radio buttons, checkboxes) enabled during asynchronous tasks (recording, processing) allows users to change settings mid-task, which can lead to unexpected behavior or errors if the state is read at different times.
+**Action:** Disable interactive UI controls (`state=tk.DISABLED`) when an async task begins, and ensure they are re-enabled (`state=tk.NORMAL`) in a `finally` block when the task completes or errors out. When using `pynput` or background threads, use `self.root.after(0, ...)` to safely update the UI state from the main thread.
