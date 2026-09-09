@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import ttk
 import threading
 import pyperclip
-import os
 from pynput import keyboard
 from recorder import Recorder
 from stt_engine import STTEngine
