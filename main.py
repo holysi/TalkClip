@@ -63,6 +63,18 @@ class VoiceToTextApp:
 
         self.progress = ttk.Progressbar(self.root, mode='indeterminate')
 
+    def disable_controls(self):
+        self.whisper_rb.config(state=tk.DISABLED)
+        self.breeze_rb.config(state=tk.DISABLED)
+        self.whisper_local_rb.config(state=tk.DISABLED)
+        self.refine_cb.config(state=tk.DISABLED)
+
+    def enable_controls(self):
+        self.whisper_rb.config(state=tk.NORMAL)
+        self.breeze_rb.config(state=tk.NORMAL)
+        self.whisper_local_rb.config(state=tk.NORMAL)
+        self.refine_cb.config(state=tk.NORMAL)
+
     def update_status(self, text, color="black"):
         self.status_label.config(text=text, fg=color)
 
@@ -74,6 +86,7 @@ class VoiceToTextApp:
         # Detect Right Alt (alt_gr)
         if key == keyboard.Key.alt_gr and not self.is_alt_pressed and not self.processing:
             self.is_alt_pressed = True
+            self.root.after(0, self.disable_controls)
             self.root.after(0, lambda: self.update_status("正在錄音...", "red"))
             self.recorder.start()
 
@@ -112,6 +125,7 @@ class VoiceToTextApp:
             self.root.after(0, lambda: self.update_status(f"錯誤: {str(e)}", "red"))
         finally:
             self.processing = False
+            self.root.after(0, self.enable_controls)
             self.root.after(0, lambda: self.progress.stop())
             self.root.after(0, lambda: self.progress.pack_forget())
 
