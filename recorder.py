@@ -1,4 +1,3 @@
-import os
 import wave
 import pyaudio
 import threading
