@@ -2,7 +2,6 @@ import os
 import wave
 import pyaudio
 import threading
-from datetime import datetime
 
 class Recorder:
     def __init__(self, filename="temp_recording.wav"):
