@@ -55,7 +55,15 @@ async def transcribe(
         "breeze": "MediaTek-Research/Breeze-ASR-25",
         "whisper-local": "openai/whisper-base" # Using 'base' for CPU; 'tiny' is faster but less accurate
     }
-    target_model = model_map.get(model.lower(), model)
+    # Validate the requested model against the whitelist
+    if model.lower() in model_map:
+        target_model = model_map[model.lower()]
+    elif model in model_map.values():
+        target_model = model
+    else:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=400, detail=f"Model '{model}' is not allowed. Supported models are: {', '.join(model_map.keys())}")
+
     print(f"Request received: model={model}, mapped={target_model}")
     
     try:
