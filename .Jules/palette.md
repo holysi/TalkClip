@@ -1,0 +1,3 @@
+## 2024-05-24 - Disable interactive controls during asynchronous tasks
+**Learning:** In desktop GUI applications like Tkinter, not disabling configuration controls (like model selection or toggles) during long-running background tasks (e.g., audio recording or API inference) can lead to race conditions where the user unintentionally changes the mode mid-flight, potentially causing the app to crash or use the wrong processing pipeline.
+**Action:** Always implement `state=tk.DISABLED` for interactive controls at the start of an async operation and restore to `state=tk.NORMAL` in a `finally` block.
