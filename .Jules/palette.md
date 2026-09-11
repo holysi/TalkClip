@@ -1,0 +1,3 @@
+## 2024-03-01 - Disabled Interactive UI Controls During Background Tasks
+**Learning:** When users try to change configuration (like changing transcription mode from Local to Cloud or toggling AI Refinement) while a background asynchronous task like recording or audio processing is ongoing, it can cause unpredictable behavior or apply incorrect settings to the already-captured audio task.
+**Action:** Always disable (`state=tk.DISABLED`) interactive Tkinter controls (such as Radiobuttons and Checkbuttons) when starting a background task, and ensure they are re-enabled (`state=tk.NORMAL`) in a `finally` block when the task completes. Use `self.root.after(0, ...)` to guarantee thread safety when modifying UI states from non-GUI threads.
