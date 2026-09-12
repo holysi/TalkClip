@@ -1,0 +1,3 @@
+## 2024-05-24 - Disable interactive elements during background tasks
+**Learning:** In Tkinter/desktop applications, allowing users to interact with configuration UI elements (such as radio buttons or checkboxes) while a background task (like audio processing or API requests) is running can lead to race conditions or unexpected state changes mid-task.
+**Action:** Always disable related interactive configuration elements (e.g., using `state=tk.DISABLED`) when starting an asynchronous background task, and re-enable them (using `state=tk.NORMAL`) in a `finally` block when the task completes. Use `self.root.after` to ensure thread safety when modifying Tkinter components from background threads.
