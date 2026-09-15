@@ -1,0 +1,3 @@
+## 2026-09-15 - Disable UI Controls During Async Operations
+**Learning:** During long-running background tasks (like audio recording and API processing) triggered by hotkeys, the Tkinter UI remains active, allowing users to switch models or toggle settings mid-processing. This can lead to race conditions, unexpected configuration states, and confusion since the operation acts on the state at the time of completion or mid-way through.
+**Action:** Implemented a pattern where interactive Tkinter UI controls (radio buttons, check buttons) are explicitly disabled (`state=tk.DISABLED`) when an async/background task starts (recording), and securely re-enabled (`state=tk.NORMAL`) in a `finally` block when the full processing lifecycle completes.
