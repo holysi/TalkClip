@@ -1,0 +1,3 @@
+## 2024-05-24 - Disabled Interactive Controls During Background Operations
+**Learning:** Interactive Tkinter UI controls (like radio buttons or checkboxes) must be explicitly disabled (`state=tk.DISABLED`) during asynchronous tasks such as recording or background processing, and re-enabled (`state=tk.NORMAL`) in a `finally` block to prevent users from making mid-task configuration changes that could cause errors or undefined behavior.
+**Action:** When implementing features involving background processing in Tkinter apps, always review all interactive UI elements and ensure they are properly disabled while the process is active, re-enabling them safely in a `finally` block in the main thread (using `self.root.after(0, ...)`).
