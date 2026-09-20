@@ -1,0 +1,3 @@
+## 2024-03-24 - Disable UI Controls During Async Tasks
+**Learning:** Users might try to change configuration settings (like selected model or refinement options) while an asynchronous task (like recording or processing) is already underway. This can lead to unexpected behavior or race conditions.
+**Action:** Always disable interactive UI controls (radio buttons, checkboxes) during asynchronous tasks and re-enable them once the task completes to prevent mid-task configuration changes.
