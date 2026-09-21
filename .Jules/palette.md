@@ -1,0 +1,3 @@
+## 2024-09-21 - Tkinter Thread Safety and UX States
+**Learning:** During asynchronous background tasks in Tkinter (like recording or model inference), users might attempt to change configurations via UI controls (e.g., radio buttons or checkboxes). This can lead to mid-task state changes and unexpected behavior or errors if the backend process accesses these variables.
+**Action:** Always explicitly disable (`state=tk.DISABLED`) interactive UI controls (like radio buttons or checkboxes) when a background task starts, and ensure they are re-enabled (`state=tk.NORMAL`) inside a `finally` block when the task completes. Delegate these UI updates to the main thread using `self.root.after(0, ...)`.
