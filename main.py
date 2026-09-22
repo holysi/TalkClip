@@ -66,6 +66,18 @@ class VoiceToTextApp:
     def update_status(self, text, color="black"):
         self.status_label.config(text=text, fg=color)
 
+    def disable_controls(self):
+        self.whisper_rb.config(state=tk.DISABLED)
+        self.breeze_rb.config(state=tk.DISABLED)
+        self.whisper_local_rb.config(state=tk.DISABLED)
+        self.refine_cb.config(state=tk.DISABLED)
+
+    def enable_controls(self):
+        self.whisper_rb.config(state=tk.NORMAL)
+        self.breeze_rb.config(state=tk.NORMAL)
+        self.whisper_local_rb.config(state=tk.NORMAL)
+        self.refine_cb.config(state=tk.NORMAL)
+
     def setup_hotkeys(self):
         self.listener = keyboard.Listener(on_press=self.on_press, on_release=self.on_release)
         self.listener.start()
@@ -75,6 +87,7 @@ class VoiceToTextApp:
         if key == keyboard.Key.alt_gr and not self.is_alt_pressed and not self.processing:
             self.is_alt_pressed = True
             self.root.after(0, lambda: self.update_status("正在錄音...", "red"))
+            self.root.after(0, self.disable_controls)
             self.recorder.start()
 
     def on_release(self, key):
@@ -114,6 +127,7 @@ class VoiceToTextApp:
             self.processing = False
             self.root.after(0, lambda: self.progress.stop())
             self.root.after(0, lambda: self.progress.pack_forget())
+            self.root.after(0, self.enable_controls)
 
 if __name__ == "__main__":
     root = tk.Tk()
