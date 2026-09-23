@@ -1,0 +1,3 @@
+## 2024-05-20 - Disable Interactive Controls During Audio Processing
+**Learning:** In desktop applications using Tkinter, allowing configuration changes (like switching STT models) mid-recording or mid-processing leads to confusing states and potential race conditions. Users often expect settings changed during a background task to apply to that task, which they do not.
+**Action:** Always visually disable (`state=tk.DISABLED`) interactive UI elements that affect background tasks while those tasks are running. Ensure these updates are thread-safe by using `root.after(0, ...)`, and always re-enable them in a `finally` block to guarantee recovery from errors.
