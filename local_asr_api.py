@@ -5,6 +5,7 @@ import traceback
 import uvicorn
 import shutil
 import os
+import tempfile
 
 app = FastAPI()
 
@@ -65,24 +66,27 @@ async def transcribe(
         print(f"ERROR: {error_msg}")
         return {"error": error_msg}
 
-    temp_file = "temp_api_audio.wav"
-    with open(temp_file, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    fd, temp_file = tempfile.mkstemp(suffix=".wav")
+    os.close(fd)
     
-    # Run inference
-    print("Running inference...")
     try:
-        result = pipe(temp_file)
-        os.remove(temp_file)
-        print(f"Inference complete. Result length: {len(result.get('text', ''))}")
-        return {"text": result["text"]}
-    except Exception as e:
+        with open(temp_file, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+
+        # Run inference
+        print("Running inference...")
+        try:
+            result = pipe(temp_file)
+            print(f"Inference complete. Result length: {len(result.get('text', ''))}")
+            return {"text": result["text"]}
+        except Exception as e:
+            error_msg = f"Inference error: {str(e)}"
+            print(f"ERROR: {error_msg}")
+            traceback.print_exc()
+            return {"error": error_msg}
+    finally:
         if os.path.exists(temp_file):
             os.remove(temp_file)
-        error_msg = f"Inference error: {str(e)}"
-        print(f"ERROR: {error_msg}")
-        traceback.print_exc()
-        return {"error": error_msg}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
