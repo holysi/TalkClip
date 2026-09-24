@@ -73,16 +73,16 @@ async def transcribe(
     print("Running inference...")
     try:
         result = pipe(temp_file)
-        os.remove(temp_file)
         print(f"Inference complete. Result length: {len(result.get('text', ''))}")
         return {"text": result["text"]}
     except Exception as e:
-        if os.path.exists(temp_file):
-            os.remove(temp_file)
         error_msg = f"Inference error: {str(e)}"
         print(f"ERROR: {error_msg}")
         traceback.print_exc()
         return {"error": error_msg}
+    finally:
+        if os.path.exists(temp_file):
+            os.remove(temp_file)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
