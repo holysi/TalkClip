@@ -52,7 +52,7 @@ def get_pipeline(model_id: str):
     return pipe
 
 @app.post("/v1/audio/transcriptions")
-async def transcribe(
+def transcribe(
     file: UploadFile = File(...), 
     model: str = Query("whisper-local")
 ):
@@ -66,13 +66,17 @@ async def transcribe(
         print(f"ERROR: {error_msg}")
         return {"error": error_msg}
 
-    temp_file = "temp_api_audio.wav"
-    with open(temp_file, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    import tempfile
+
+    fd, temp_file = tempfile.mkstemp(suffix=".wav")
+    os.close(fd)
     
-    # Run inference
-    print("Running inference...")
     try:
+        with open(temp_file, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+
+        # Run inference
+        print("Running inference...")
         result = pipe(temp_file)
         print(f"Inference complete. Result length: {len(result.get('text', ''))}")
         return {"text": result["text"]}
