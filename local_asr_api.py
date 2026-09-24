@@ -11,6 +11,12 @@ app = FastAPI()
 # Loaded models dictionary to avoid reloading
 loaded_pipes = {}
 
+# Mapping friendly names to HF IDs
+MODEL_MAP = {
+    "breeze": "MediaTek-Research/Breeze-ASR-25",
+    "whisper-local": "openai/whisper-base" # Using 'base' for CPU; 'tiny' is faster but less accurate
+}
+
 def get_pipeline(model_id: str):
     if model_id in loaded_pipes:
         return loaded_pipes[model_id]
@@ -50,12 +56,7 @@ async def transcribe(
     file: UploadFile = File(...), 
     model: str = Query("whisper-local")
 ):
-    # Mapping friendly names to HF IDs
-    model_map = {
-        "breeze": "MediaTek-Research/Breeze-ASR-25",
-        "whisper-local": "openai/whisper-base" # Using 'base' for CPU; 'tiny' is faster but less accurate
-    }
-    target_model = model_map.get(model.lower(), model)
+    target_model = MODEL_MAP.get(model.lower(), model)
     print(f"Request received: model={model}, mapped={target_model}")
     
     try:
