@@ -8,13 +8,13 @@ models = [
 ]
 
 def download_models():
+    # Check if GPU is available to determine dtype
+    has_gpu = torch.cuda.is_available()
+    torch_dtype = torch.float16 if has_gpu else torch.float32
+
     for model_id in models:
         print(f"\n--- Downloading model: {model_id} ---")
         try:
-            # Check if GPU is available to determine dtype
-            has_gpu = torch.cuda.is_available()
-            torch_dtype = torch.float16 if has_gpu else torch.float32
-            
             print(f"Loading processor for {model_id}...")
             AutoProcessor.from_pretrained(model_id, trust_remote_code=True)
             
