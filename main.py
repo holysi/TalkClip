@@ -47,18 +47,18 @@ class VoiceToTextApp:
         
         self.mode_var = tk.StringVar(value="whisper")
         self.whisper_rb = ttk.Radiobutton(self.root, text="OpenAI Whisper (Cloud)", variable=self.mode_var, value="whisper")
-        self.whisper_rb.pack()
+        self.whisper_rb.pack(anchor="w", padx=20)
 
         self.breeze_rb = ttk.Radiobutton(self.root, text="Breeze-ASR (Local)", variable=self.mode_var, value="breeze")
-        self.breeze_rb.pack()
+        self.breeze_rb.pack(anchor="w", padx=20)
 
         self.whisper_local_rb = ttk.Radiobutton(self.root, text="Whisper-Local (CPU)", variable=self.mode_var, value="whisper-local")
-        self.whisper_local_rb.pack()
+        self.whisper_local_rb.pack(anchor="w", padx=20)
 
         # Added Refinement Toggle
         self.refine_var = tk.BooleanVar(value=False)
         self.refine_cb = ttk.Checkbutton(self.root, text="AI 內文潤飾 (需 OpenAI Key)", variable=self.refine_var)
-        self.refine_cb.pack(pady=5)
+        self.refine_cb.pack(anchor="w", padx=20, pady=5)
 
         self.progress = ttk.Progressbar(self.root, mode='indeterminate')
 
