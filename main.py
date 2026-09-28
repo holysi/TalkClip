@@ -23,6 +23,7 @@ class VoiceToTextApp:
         
         self.is_alt_pressed = False
         self.processing = False
+        self.reset_timer_id = None
         
         self.setup_ui()
         self.setup_hotkeys()
@@ -62,8 +63,15 @@ class VoiceToTextApp:
 
         self.progress = ttk.Progressbar(self.root, mode='indeterminate')
 
-    def update_status(self, text, color="black"):
+    def update_status(self, text, color="black", auto_reset=False):
+        if self.reset_timer_id is not None:
+            self.root.after_cancel(self.reset_timer_id)
+            self.reset_timer_id = None
+
         self.status_label.config(text=text, fg=color)
+
+        if auto_reset:
+            self.reset_timer_id = self.root.after(3000, lambda: self.update_status("準備就緒", "black"))
 
     def set_controls_state(self, state):
         self.whisper_rb.config(state=state)
@@ -111,7 +119,8 @@ class VoiceToTextApp:
             
             pyperclip.copy(refined_text)
             
-            self.root.after(0, lambda: self.update_status("已複製到剪貼簿！", "green"))
+            preview_text = refined_text[:15] + "..." if len(refined_text) > 15 else refined_text
+            self.root.after(0, lambda: self.update_status(f"已複製: {preview_text}", "green", auto_reset=True))
             print(f"Result: {refined_text}")
             
         except Exception as e:
