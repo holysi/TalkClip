@@ -23,6 +23,7 @@ class VoiceToTextApp:
         
         self.is_alt_pressed = False
         self.processing = False
+        self.feedback_timer_id = None
         
         self.setup_ui()
         self.setup_hotkeys()
@@ -65,6 +66,12 @@ class VoiceToTextApp:
     def update_status(self, text, color="black"):
         self.status_label.config(text=text, fg=color)
 
+    def show_copied_feedback(self, preview):
+        if self.feedback_timer_id is not None:
+            self.root.after_cancel(self.feedback_timer_id)
+        self.update_status(f"已複製: {preview}", "green")
+        self.feedback_timer_id = self.root.after(3000, lambda: self.update_status("準備就緒", "black"))
+
     def set_controls_state(self, state):
         self.whisper_rb.config(state=state)
         self.breeze_rb.config(state=state)
@@ -79,6 +86,8 @@ class VoiceToTextApp:
         # Detect Right Alt (alt_gr)
         if key == keyboard.Key.alt_gr and not self.is_alt_pressed and not self.processing:
             self.is_alt_pressed = True
+            if self.feedback_timer_id is not None:
+                self.root.after_cancel(self.feedback_timer_id)
             self.root.after(0, lambda: self.set_controls_state(tk.DISABLED))
             self.root.after(0, lambda: self.update_status("正在錄音...", "red"))
             self.recorder.start()
@@ -111,7 +120,11 @@ class VoiceToTextApp:
             
             pyperclip.copy(refined_text)
             
-            self.root.after(0, lambda: self.update_status("已複製到剪貼簿！", "green"))
+            if len(refined_text) > 15:
+                preview = refined_text[:15] + "..."
+            else:
+                preview = refined_text
+            self.root.after(0, lambda: self.show_copied_feedback(preview))
             print(f"Result: {refined_text}")
             
         except Exception as e:
