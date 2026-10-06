@@ -4,3 +4,7 @@
 ## 2023-10-24 - Left-Aligning Tkinter Radio Buttons
 **Learning:** By default, Tkinter `pack()` centers elements, which causes lists of radio buttons to have a jagged, hard-to-read left edge.
 **Action:** Always include `anchor="w"` (and optionally `padx` for margins) when packing multiple radio buttons or checkboxes in a vertical stack to ensure a clean, readable left alignment.
+
+## 2025-03-01 - Inline Truncated Preview for Clipboard Notifications
+**Learning:** For clipboard-based applications, displaying a truncated preview of the copied content inline provides immediate validation and is better UX than a generic "Copied!" message.
+**Action:** Replace generic success messages with a truncated preview of the actual content and auto-hide the notification after a few seconds.
