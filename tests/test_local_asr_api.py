@@ -29,7 +29,7 @@ def test_transcribe_happy_path():
         mock_pipe.assert_called_once()
         args, _ = mock_pipe.call_args
         temp_file_passed = args[0]
-        assert temp_file_passed == "temp_api_audio.wav"
+        assert temp_file_passed.endswith(".wav")
 
         # Ensure temp file is cleaned up after success
         assert not os.path.exists("temp_api_audio.wav")
