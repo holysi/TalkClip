@@ -32,7 +32,8 @@ class STTEngine:
                 response = requests.post(
                     api_url,
                     files={"file": f},
-                    params={"model": model_key}
+                    params={"model": model_key},
+                    timeout=30
                 )
             
             if response.status_code != 200:
