@@ -1,4 +1,3 @@
-import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import patch, MagicMock
 import os
@@ -29,10 +28,10 @@ def test_transcribe_happy_path():
         mock_pipe.assert_called_once()
         args, _ = mock_pipe.call_args
         temp_file_passed = args[0]
-        assert temp_file_passed == "temp_api_audio.wav"
+        assert temp_file_passed.endswith(".wav")
 
         # Ensure temp file is cleaned up after success
-        assert not os.path.exists("temp_api_audio.wav")
+        assert not os.path.exists(temp_file_passed)
 
 def test_transcribe_breeze_model_mapping():
     with patch("local_asr_api.get_pipeline") as mock_get_pipeline:
