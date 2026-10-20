@@ -29,13 +29,13 @@ def get_pipeline(model_id: str):
     print(f"Loading {model_id} to {device} (dtype: {torch_dtype})...")
     
     # Standard transformers pipeline logic
-    processor = AutoProcessor.from_pretrained(model_id, trust_remote_code=True)
+    processor = AutoProcessor.from_pretrained(model_id, trust_remote_code=False)
     model = AutoModelForSpeechSeq2Seq.from_pretrained(
         model_id, 
         torch_dtype=torch_dtype, 
         low_cpu_mem_usage=True, 
         use_safetensors=True,
-        trust_remote_code=True
+        trust_remote_code=False
     )
     model.to(device)
 
