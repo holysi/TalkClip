@@ -72,8 +72,14 @@ def transcribe(
     os.close(fd)
     
     try:
+        MAX_FILE_SIZE = 50 * 1024 * 1024 # 50 MB
+        bytes_written = 0
         with open(temp_file, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
+            while chunk := file.file.read(8192):
+                buffer.write(chunk)
+                bytes_written += len(chunk)
+                if bytes_written > MAX_FILE_SIZE:
+                    return {"error": f"File size exceeds maximum allowed size of {MAX_FILE_SIZE} bytes."}
 
         # Run inference
         print("Running inference...")

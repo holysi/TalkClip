@@ -29,10 +29,10 @@ def test_transcribe_happy_path():
         mock_pipe.assert_called_once()
         args, _ = mock_pipe.call_args
         temp_file_passed = args[0]
-        assert temp_file_passed == "temp_api_audio.wav"
+        assert temp_file_passed.endswith(".wav")
 
         # Ensure temp file is cleaned up after success
-        assert not os.path.exists("temp_api_audio.wav")
+        assert not os.path.exists(temp_file_passed)
 
 def test_transcribe_breeze_model_mapping():
     with patch("local_asr_api.get_pipeline") as mock_get_pipeline:
@@ -93,5 +93,27 @@ def test_transcribe_inference_error():
         assert "error" in json_resp
         assert "Inference failed" in json_resp["error"]
 
+        args, _ = mock_pipe.call_args
+        temp_file_passed = args[0]
+
         # Ensure temp file is cleaned up after an exception
-        assert not os.path.exists("temp_api_audio.wav")
+        assert not os.path.exists(temp_file_passed)
+
+def test_transcribe_file_too_large():
+    with patch("local_asr_api.get_pipeline") as mock_get_pipeline:
+        mock_pipe = MagicMock()
+        mock_get_pipeline.return_value = mock_pipe
+
+        # Create large dummy file content (> 50MB limit)
+        file_content = b"0" * (50 * 1024 * 1024 + 1)
+        files = {"file": ("test.wav", file_content, "audio/wav")}
+
+        response = client.post("/v1/audio/transcriptions?model=whisper-local", files=files)
+
+        assert response.status_code == 200
+        json_resp = response.json()
+        assert "error" in json_resp
+        assert "File size exceeds maximum allowed size" in json_resp["error"]
+
+        # Pipe should not be called because it aborted
+        mock_pipe.assert_not_called()
